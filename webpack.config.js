@@ -3,16 +3,17 @@ const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     mode: modoDev ? 'development' : 'production',
     entry: './src/app.js',
     output: {
         filename: 'app.js',
-        path: __dirname + '/public'
+        path: __dirname + '/build'
     },
     devServer: {
-        contentBase: './public',
+        contentBase: './build',
         port: 8080
     },
     optimization: {
@@ -25,9 +26,11 @@ module.exports = {
         ]
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: "style.css"
-        })
+        new MiniCssExtractPlugin({ filename: "style.css" }),
+        new CopyWebpackPlugin([
+            { context: 'src/assets/', from: '**/*.html' },
+            { context: 'src/assets/', from: 'imgs/**/*' }
+        ])
     ],
     module: {
         rules: [{
@@ -40,6 +43,9 @@ module.exports = {
             ]
         },{
             test: /\.(png|svg|jpg|gif|jpeg)$/,
+            use: ['file-loader']
+        },{
+            test: /.(tff|otf|eot|svg|woff(2)?)$/,
             use: ['file-loader']
         }]
     }
