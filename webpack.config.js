@@ -20,7 +20,8 @@ module.exports = {
         minimizer: [
             new UglifyJSPlugin({
                 cache: true,
-                parallel: true
+                parallel: true,
+                sourceMap: true
             }),
             new OptimizeCSSAssetsPlugin({})
         ]
@@ -45,7 +46,7 @@ module.exports = {
             test: /\.(png|svg|jpg|gif|jpeg)$/,
             use: ['file-loader']
         },{
-            test: /.(tff|otf|eot|svg|woff(2)?)$/,
+            test: /\.(ttf|otf|eot|svg|png|woff(2)?)$/,
             use: ['file-loader']
         }]
     }
